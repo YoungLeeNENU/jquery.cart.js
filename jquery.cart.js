@@ -2,9 +2,29 @@
  * @fileOverview slide cart plugin
  * @name cart.js
  * @author Young Lee   youngleemails@gmail.com
- * @license GPL
+ * @license GNU GENERAL PUBLIC LICENSE Version 3
  */
 (function($) {
+	$.fn.slideLeftShow = function (speed, fn) {
+		return this.each(function() {
+			$(this).show('slide', {direction: 'left'}, speed, fn);
+		});		
+	};
+	$.fn.slideRightShow = function (speed, fn) {
+		return this.each(function() {
+			$(this).show('slide', {direction: 'right'}, speed, fn);
+		});
+	};
+	$.fn.slideLeftHide = function (speed, fn) {
+		return this.each(function() {
+			$(this).hide('slide', {direction: 'left'}, speed, fn);
+		});		
+	};
+	$.fn.slideRightHide = function (speed, fn) {
+		return this.each(function() {
+			$(this).hide('slide', {direction: 'right'}, speed, fn);
+		});		
+	};
 	$.widget('uicart.slidecart', {
 		options: {
 			location: 'right',    // left, right, top, bottom
@@ -29,14 +49,6 @@
 					return { top: 0, right: 0, width: '35px', height: '100%' };
 				}
 				return rtval;
-			},
-			slideIn: function () {
-				//TODO: 
-				return ;
-			},
-			slideOut: function () {
-				//TODO: 
-				return ;
 			}
 		},
 		_create: function () {
@@ -61,6 +73,21 @@
 				.addClass('inner-panel')
 				.appendTo(this.element)
 				.hide();
+			this._addHook(this._cartHandler, 'click', this._innerPanel);
+		},
+		_addHook: function (anchor, event, folddiv) {
+			anchor.on(event, function () {
+				$(this).toggleClass('unfold');
+				if ($(this).hasClass('unfold')) {
+					folddiv.slideRightShow('slow', function () {
+						console.log('show');
+					});
+				} else {
+					folddiv.slideRightHide('slow', function () {
+						console.log('hide');
+					});
+				}
+			});
 		},
 		destroy: function () {
 			this._cartHandler.remove();
