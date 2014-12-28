@@ -7,29 +7,29 @@
 (function($) {
 	$.fn.slideLeftShow = function (speed, fn) {
 		return this.each(function() {
-			$(this).show('slide', {direction: 'left'}, speed, fn);
-		});		
+			$(this).show('slide', { direction: 'left' }, speed, fn);
+		});
 	};
 	$.fn.slideRightShow = function (speed, fn) {
 		return this.each(function() {
-			$(this).show('slide', {direction: 'right'}, speed, fn);
+			$(this).show('slide', { direction: 'right' }, speed, fn);
 		});
 	};
 	$.fn.slideLeftHide = function (speed, fn) {
 		return this.each(function() {
-			$(this).hide('slide', {direction: 'left'}, speed, fn);
+			$(this).hide('slide', { direction: 'left' }, speed, fn);
 		});		
 	};
 	$.fn.slideRightHide = function (speed, fn) {
 		return this.each(function() {
-			$(this).hide('slide', {direction: 'right'}, speed, fn);
-		});		
+			$(this).hide('slide', { direction: 'right' }, speed, fn);
+		});
 	};
 	$.widget('uicart.slidecart', {
 		options: {
 			location: 'right',    // left, right, top, bottom
 			handlerBackground: '#000000',
-			panelBackground: '#FFFF00',
+			panelBackground: '#383838',
 			setLocation: function (pos) {
 				var rtval = new Object();
 				switch (pos) {
@@ -61,15 +61,15 @@
 					position: 'absolute',
 					zIndex: 9,
 					background: this.options.handlerBackground
-				}, { margin: '0 0 0 300', padding: '0 0 0 0', width: 35, height: '100%' }))
+				}, { margin: '0 0 0 0', padding: '0 0 0 0', width: 35, height: '100%' }))
 				.addClass('cart-handler')
 				.appendTo(this.element);
 			this._innerPanel = $('<div></div>')
 				.css($.extend({
-					position: 'relative',
+					position: 'absolute',
 					zIndex: 8,
 					background: this.options.panelBackground
-				}, { margin: '0 0 0 35', padding: '0 0 0 0', width: 300, height: '100%' }))
+				}, { margin: '0 0 0 0', padding: '0 0 0 35', width: 300, height: '100%' }))
 				.addClass('inner-panel')
 				.appendTo(this.element)
 				.hide();
@@ -80,11 +80,13 @@
 				$(this).toggleClass('unfold');
 				if ($(this).hasClass('unfold')) {
 					folddiv.slideRightShow('slow', function () {
-						console.log('show');
+						// Set opacity
+						// $('body').css({ opacity: 0.1 });
 					});
 				} else {
-					folddiv.slideRightHide('slow', function () {
-						console.log('hide');
+					folddiv.slideRightHide('normal', function () {
+						// Set opacity
+						// $('body').css({ opacity: 1 });
 					});
 				}
 			});
