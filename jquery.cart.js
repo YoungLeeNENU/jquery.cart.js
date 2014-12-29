@@ -61,7 +61,7 @@
 					position: 'absolute',
 					zIndex: 9,
 					background: this.options.handlerBackground
-				}, { margin: '0 0 0 0', padding: '0 0 0 0', width: 35, height: '100%' }))
+				}, { margin: '0 0 0 300', padding: '0 0 0 0', width: 35, height: '100%' }))
 				.addClass('cart-handler')
 				.appendTo(this.element);
 			this._innerPanel = $('<div></div>')
@@ -76,17 +76,31 @@
 			this._addHook(this._cartHandler, 'click', this._innerPanel);
 		},
 		_addHook: function (anchor, event, folddiv) {
+			var mask = document.createElement('div');
+			$(mask).css({
+				position : "absolute",
+				backgroundColor: 'black',
+				opacity : 0.5,
+				top : 0,
+				left : 0,
+				width : $(document.body).width(),
+				zIndex : 5
+			}).hide().appendTo(document.body);
 			anchor.on(event, function () {
 				$(this).toggleClass('unfold');
 				if ($(this).hasClass('unfold')) {
-					folddiv.slideRightShow('slow', function () {
-						// Set opacity
-						// $('body').css({ opacity: 0.1 });
+					// $('.cart-handler').toggle('slide', { direction: 'left' }, 'slow');
+					$(mask).css({
+						height : $(document).height()
+					}).fadeIn('slow');					
+					folddiv.slideRightShow('normal', function () {
+						//TODO: 
 					});
 				} else {
-					folddiv.slideRightHide('normal', function () {
-						// Set opacity
-						// $('body').css({ opacity: 1 });
+					// $('.cart-handler').toggle('slide', { direction: 'left' }, 'normal');
+					$(mask).fadeOut("slow");						
+					folddiv.slideRightHide('fast', function () {
+						//TODO: 
 					});
 				}
 			});
