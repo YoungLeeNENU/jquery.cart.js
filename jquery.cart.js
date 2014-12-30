@@ -29,18 +29,19 @@
 			handlerBackground: '#000000',
 			panelBackground: '#383838',
 			mask: true,
+			maskZIndex: 80,
 			maskOpacity: 0.5
 		},
 		_create: function () {
 			this._setConPos(this.options.position);
 			this.element.css($.extend({
 				position: 'absolute',
-				zIndex: 7
+				zIndex: this.options.maskZIndex + 1
 			}, this.options.containerPos));
 			this._cartHandler = $('<div></div>')
 				.css($.extend({
 					position: 'absolute',
-					zIndex: 9,
+					zIndex: this.options.maskZIndex + 3,
 					background: this.options.handlerBackground
 				}, this.options.handlerPos))
 				.addClass('cart-handler')
@@ -48,7 +49,7 @@
 			this._innerPanel = $('<div></div>')
 				.css($.extend({
 					position: 'absolute',
-					zIndex: 8,
+					zIndex: this.options.maskZIndex + 2,
 					background: this.options.panelBackground
 				}, this.options.panelPos))
 				.addClass('inner-panel')
@@ -135,7 +136,7 @@
 				width : $(document).width(),
 				left: 0,
 				right: 0,
-				zIndex : 5
+				zIndex: that.options.maskZIndex
 			}).hide().appendTo(document.body);
 			anchor.on(event, function () {
 				$(this).toggleClass('unfold');
