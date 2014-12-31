@@ -7,8 +7,10 @@ $(document).ready(function () {
 		handlerWidth: 35,
 		panelWidth: 280,
 		handlerBackground: '#000000',
-		panelBackground: '#383838',
+		panelBackground: '#5F5F5F',
 		mask: true,
-		maskOpacity: 0.4
+		maskOpacity: 0.4,
+		handlerButtons: 2,
+		panelButtons: 1
 	}).addClass('slidecart-test');
 });

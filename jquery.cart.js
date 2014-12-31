@@ -6,21 +6,23 @@
  */
 (function($) {
 	$.fn.slideShow = function (dir, speed, fn) {
-		return this.each(function() {
-			$(this).show('slide', { direction: dir }, speed, fn);
-		});
+		return this.animate({ width: 'show' }, speed, fn);
+		// return this.each(function() {
+		// 	$(this).show('slide', { direction: dir }, speed, fn);
+		// });
 	};
 	$.fn.slideHide = function (dir, speed, fn) {
-		return this.each(function() {
-			$(this).hide('slide', { direction: dir }, speed, fn);
-		});
+		return this.animate({ width: 'hide' }, speed, fn);
+		// return this.each(function() {
+		// 	$(this).hide('slide', { direction: dir }, speed, fn);
+		// });
 	};
 	$.widget('uicart.slidecart', {
 		options: {
 			position: 'right',
 			top: 0,
 			bottom: 0,
-			height: $(document.body).height(),
+			height: $(document).height(),
 			handlerWidth: 35,
 			panelWidth: 250,
 			containerPos: null,
@@ -28,9 +30,11 @@
 			panelPos: null,
 			handlerBackground: '#000000',
 			panelBackground: '#383838',
-			mask: true,
-			maskZIndex: 80,
-			maskOpacity: 0.5
+			mask: false,
+			maskZIndex: 70,
+			maskOpacity: 0.5,
+			handlerButtons: 1,
+			panelButtons: 1
 		},
 		_create: function () {
 			this._setConPos(this.options.position);
@@ -55,6 +59,7 @@
 				.addClass('inner-panel')
 				.appendTo(this.element)
 				.hide();
+			this._createButton(this._innerPanel);
 			this._addHook(this._cartHandler, 'click', this._innerPanel);
 		},
 		_setConPos: function (pos) {
@@ -124,6 +129,21 @@
 				break;
 			}
 		},
+		_createButton: function (panel) {
+			this._panelBtn = $('<div></div>')
+				.css({
+					height: this.options.handlerWidth,
+					width: this.options.panelWidth,
+					marginLeft: - this.options.handlerWidth,
+					marginTop: this.options.height - this.options.handlerWidth,
+					backgroundColor: '#ffa500',
+					bottom: this.options.bottom,
+					left: 0,
+					cursor: 'pointer'
+				})
+				.addClass('panel-btn')
+				.appendTo(panel);
+		},
 		_addHook: function (anchor, event, folddiv) {
 			var mask = document.createElement('div'),
 				that = this;
@@ -146,14 +166,19 @@
 							height : $(document).height() - (that.options.top + that.options.bottom)
 						}).fadeIn('normal');
 					}
-					folddiv.slideShow(that.options.position, 'normal');
+					folddiv.animate({width: 'toggle'});
+					// folddiv.slideShow(that.options.position, 'normal');
 				} else {
 					if (that.options.mask) {
 						$(mask).fadeOut("normal");
 					}
-					folddiv.slideHide(that.options.position, 'fast');
+					folddiv.animate({width: 'toggle'});
+					// folddiv.slideHide(that.options.position, 'fast');
 				}
 			});
+		},
+		addHook: function (anchor, event, folddiv) {
+			this._addHook(anchor, event, folddiv);
 		},
 		destroy: function () {
 			this._cartHandler.remove();
