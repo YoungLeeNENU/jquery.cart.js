@@ -22,7 +22,7 @@
 			position: 'right',
 			top: 0,
 			bottom: 0,
-			height: $(document).height(),
+			height: document.body.clientHeight,
 			handlerWidth: 35,
 			panelWidth: 250,
 			containerPos: null,
@@ -37,10 +37,13 @@
 			panelButtons: 1
 		},
 		_create: function () {
+			var that = this,
+			    iWinHeight = document.body.clientHeight;
 			this._setConPos(this.options.position);
 			this.element.css($.extend({
-				position: 'absolute',
+				position: 'fixed',
 				zIndex: this.options.maskZIndex + 1
+				// border: '1px solid black'    // test
 			}, this.options.containerPos));
 			this._cartHandler = $('<div></div>')
 				.css($.extend({
@@ -59,6 +62,11 @@
 				.addClass('inner-panel')
 				.appendTo(this.element)
 				.hide();
+			$(window).resize(function () {
+				that.element.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
+				that._cartHandler.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
+				that._innerPanel.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
+			});
 			this._createButton(this._innerPanel);
 			this._addHook(this._cartHandler, 'click', this._innerPanel);
 		},
@@ -148,7 +156,7 @@
 			var mask = document.createElement('div'),
 				that = this;
 			$(mask).css({
-				position : "absolute",
+				position : "fixed",
 				backgroundColor: 'black',
 				opacity : this.options.maskOpacity,
 				top : this.options.top,

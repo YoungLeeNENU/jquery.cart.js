@@ -3,7 +3,7 @@ $(document).ready(function () {
 		position: 'right',
 		top: 87,
 		bottom: 0,
-		height: $(document).height() - 87,
+		height: document.body.clientHeight - 87,
 		handlerWidth: 35,
 		panelWidth: 280,
 		handlerBackground: '#000000',
