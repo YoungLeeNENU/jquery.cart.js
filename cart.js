@@ -13,4 +13,24 @@ $(document).ready(function () {
 		handlerButtons: 2,
 		panelButtons: 1
 	}).addClass('slidecart-test');
+	// $('#J_cartItems').find('.items').cartitems({
+	// 	// liNum: 10
+	// 	liNum: 3,
+	// 	data: [{
+	// 		'game_name': 'game1',
+	// 		'items': [{
+	// 			item_name: 'sample1',
+	// 			r_id: 314
+	// 		}, {
+	// 			item_name: 'sample2',
+	// 			r_id: 315
+	// 		}]
+	// 	}, {
+	// 		'game_name': 'game2',
+	// 		'items': [{
+	// 			item_name: 'sample5',
+	// 			r_id: 625
+	// 		}]			
+	// 	}]
+	// });
 });

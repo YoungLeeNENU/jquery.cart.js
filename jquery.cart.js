@@ -4,19 +4,25 @@
  * @author Young Lee   youngleemails@gmail.com
  * @license GNU GENERAL PUBLIC LICENSE Version 3
  */
+// cart container
 (function($) {
-	$.fn.slideShow = function (dir, speed, fn) {
-		return this.animate({ width: 'show' }, speed, fn);
-		// return this.each(function() {
-		// 	$(this).show('slide', { direction: dir }, speed, fn);
-		// });
-	};
-	$.fn.slideHide = function (dir, speed, fn) {
-		return this.animate({ width: 'hide' }, speed, fn);
-		// return this.each(function() {
-		// 	$(this).hide('slide', { direction: dir }, speed, fn);
-		// });
-	};
+	$.fn.slideShow = function (dir, offset, speed, easing, fn) {
+		var prop = new Object();
+		prop[dir] = 0;
+		return this.animate(prop, speed, easing, fn);
+	};    // DONE
+	$.fn.slideHide = function (dir, offset, speed, easing, fn) {
+		var prop = new Object();
+		prop[dir] = -offset;
+		return this.animate(prop, speed, easing, fn);
+	};    // DONE
+	$.fn.reSize = function (element) {
+		var that = this,
+			iWinHeight = document.body.clientHeight;
+		$(window).resize(function () {
+			return element.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
+		});
+	};    // PENDING
 	$.widget('uicart.slidecart', {
 		options: {
 			position: 'right',
@@ -37,14 +43,15 @@
 			panelButtons: 1
 		},
 		_create: function () {
-			var that = this,
-			    iWinHeight = document.body.clientHeight;
 			this._setConPos(this.options.position);
+			
 			this.element.css($.extend({
 				position: 'fixed',
 				zIndex: this.options.maskZIndex + 1
 				// border: '1px solid black'    // test
 			}, this.options.containerPos));
+			this._reSize(this.element);
+			
 			this._cartHandler = $('<div></div>')
 				.css($.extend({
 					position: 'absolute',
@@ -53,6 +60,8 @@
 				}, this.options.handlerPos))
 				.addClass('cart-handler')
 				.appendTo(this.element);
+			this._reSize(this._cartHandler);
+			
 			this._innerPanel = $('<div></div>')
 				.css($.extend({
 					position: 'absolute',
@@ -60,15 +69,19 @@
 					background: this.options.panelBackground
 				}, this.options.panelPos))
 				.addClass('inner-panel')
-				.appendTo(this.element)
-				.hide();
+				.appendTo(this.element);
+			this._reSize(this._innerPanel);
+			
+			// this._createButton(this._innerPanel);
+			
+			this._addHook(this._cartHandler, 'click', this.element);
+		},
+		_reSize: function (element) {
+			var that = this,
+			    iWinHeight = document.body.clientHeight;
 			$(window).resize(function () {
-				that.element.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
-				that._cartHandler.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
-				that._innerPanel.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
+				element.css({ height: document.body.clientHeight - (iWinHeight - that.options.height) });
 			});
-			this._createButton(this._innerPanel);
-			this._addHook(this._cartHandler, 'click', this._innerPanel);
 		},
 		_setConPos: function (pos) {
 			switch (pos) {
@@ -76,12 +89,12 @@
 				this.options.containerPos = {
 					top: this.options.top,
 					bottom: this.options.bottom,
-					right: 0,
+					right: -this.options.panelWidth,
 					width: this.options.handlerWidth + this.options.panelWidth,
 					height: this.options.height
 				};
 				this.options.handlerPos = {
-					marginLeft: this.options.panelWidth,
+					marginLeft: 0,
 					padding: 0,
 					width: this.options.handlerWidth,
 					height: this.options.height
@@ -97,28 +110,7 @@
 				this.options.containerPos = {
 					top: this.options.top,
 					bottom: this.options.bottom,
-					left: 0,
-					width: this.options.handlerWidth + this.options.panelWidth,
-					height: this.options.height
-				};
-				this.options.handlerPos = {
-					marginRight: this.options.panelWidth,
-					padding: 0,
-					width: this.options.handlerWidth,
-					height: this.options.height
-				};
-				this.options.panelPos = {
-					margin: 0,
-					paddingLeft: this.options.handlerWidth,
-					width: this.options.panelWidth,
-					height: this.options.height
-				};
-				break;
-			default:    // right
-				this.options.containerPos = {
-					top: this.bottom.top,
-					bottom: this.options.bottom,
-					right: 0,
+					left: -this.options.panelWidth,
 					width: this.options.handlerWidth + this.options.panelWidth,
 					height: this.options.height
 				};
@@ -135,8 +127,28 @@
 					height: this.options.height
 				};
 				break;
+			default:    // right
+				this.options.containerPos = {
+					top: this.options.top,
+					bottom: this.options.bottom,
+					right: -this.options.panelWidth,
+					width: this.options.handlerWidth + this.options.panelWidth,
+					height: this.options.height
+				};
+				this.options.handlerPos = {
+					marginLeft: 0,
+					padding: 0,
+					width: this.options.handlerWidth,
+					height: this.options.height
+				};
+				this.options.panelPos = {
+					margin: 0,
+					paddingLeft: this.options.handlerWidth,
+					width: this.options.panelWidth,
+					height: this.options.height
+				};
 			}
-		},
+		},    // DONE
 		_createButton: function (panel) {
 			this._panelBtn = $('<div></div>')
 				.css({
@@ -144,7 +156,7 @@
 					width: this.options.panelWidth,
 					marginLeft: - this.options.handlerWidth,
 					marginTop: this.options.height - this.options.handlerWidth,
-					backgroundColor: '#ffa500',
+					backgroundColor: '#DCDCDC',
 					bottom: this.options.bottom,
 					left: 0,
 					cursor: 'pointer'
@@ -171,17 +183,15 @@
 				if ($(this).hasClass('unfold')) {
 					if (that.options.mask) {
 						$(mask).css({
-							height : $(document).height() - (that.options.top + that.options.bottom)
+ 							height : $(document).height() - (that.options.top + that.options.bottom)
 						}).fadeIn('normal');
 					}
-					folddiv.animate({width: 'toggle'});
-					// folddiv.slideShow(that.options.position, 'normal');
+					folddiv.slideShow(that.options.position, that.options.panelWidth, 'normal');
 				} else {
 					if (that.options.mask) {
 						$(mask).fadeOut("normal");
 					}
-					folddiv.animate({width: 'toggle'});
-					// folddiv.slideHide(that.options.position, 'fast');
+					folddiv.slideHide(that.options.position, that.options.panelWidth, 'fast');
 				}
 			});
 		},
@@ -193,5 +203,39 @@
 			this._innerPanel.remove();
 			$.Widget.prototype.destroy.apply(this, arguments);
 		}
+	});
+})(jQuery);
+
+// item in the cart
+(function($) {
+	$.widget('uicart.cartitems', {
+		options: {
+			liNum: 1
+		},
+		_create: function () {
+			for(var i = 0; i < this.options.liNum; i++) {
+				this.item = $('<div></div>')
+					.addClass('cart-item')
+					.css({
+						height: 100,
+						// width: "100%",
+						marginLeft: 10,
+						marginRight: 10,
+						padding: 0,
+						borderBottom: '1px solid grey'
+					})
+					.appendTo(this.element);
+			}
+		},
+		destroy: function () {
+			//TODO: 
+		}
+	});
+})(jQuery);
+
+// filter info
+(function($) {
+	$.widget('uicart.infopanel', {
+		
 	});
 })(jQuery);
