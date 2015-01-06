@@ -237,10 +237,9 @@
 			}).hide().appendTo(document.body);
 			anchor.each(function () {
 				$(this).on(event, function () {
-					$(this).css({
-						backgroundColor: '#FFD700'
-					});
-					if (queue.length > that.options.tags - 1)
+					$(this).css({ backgroundColor: '#FFD700' });
+					var queueSize = that.options.tags == 1 ? 2 : that.options.tags;    // queueSize >= 2 
+					if (queue.length > queueSize - 1)
 						queue.shift();
 					queue.push(this);
 					if (queue.length === 1) {
