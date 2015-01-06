@@ -39,19 +39,23 @@
 			mask: false,
 			maskZIndex: 70,
 			maskOpacity: 0.5,
-			handlerButtons: 1,
-			panelButtons: 1
+			tags: 1,
+			setTagInfo: function () {
+				return [ 0 ];    // 0 by default
+			}
 		},
 		_create: function () {
+			// Set css positions
 			this._setConPos(this.options.position);
-			
+
+			// Fixed element 
 			this.element.css($.extend({
 				position: 'fixed',
 				zIndex: this.options.maskZIndex + 1
-				// border: '1px solid black'    // test
 			}, this.options.containerPos));
 			this._reSize(this.element);
-			
+
+			// Handler
 			this._cartHandler = $('<div></div>')
 				.css($.extend({
 					position: 'absolute',
@@ -61,7 +65,8 @@
 				.addClass('cart-handler')
 				.appendTo(this.element);
 			this._reSize(this._cartHandler);
-			
+
+			// Panel
 			this._innerPanel = $('<div></div>')
 				.css($.extend({
 					position: 'absolute',
@@ -72,9 +77,14 @@
 				.appendTo(this.element);
 			this._reSize(this._innerPanel);
 			
-			// this._createButton(this._innerPanel);
-			
-			this._addHook(this._cartHandler, 'click', this.element);
+			// Add tag
+			var hooks = this._addTag(this._cartHandler, this.options.tags, this.options.setTagInfo);
+
+			// Add submit button
+			// this._addButton(this._innerPanel);
+
+			// Add trigger
+			this._addHook(hooks, 'click', this.element);
 		},
 		_reSize: function (element) {
 			var that = this,
@@ -149,7 +159,49 @@
 				};
 			}
 		},    // DONE
-		_createButton: function (panel) {
+		_addTag: function (handler, tNum, tfoo) {    // Shall controll css from the outside
+			var info = tfoo();
+			for(var i = 0; i < tNum; i++) {
+				var hgtFrom = 90,
+					hgtTo = 120,
+					tinfo = info[i] === undefined ? 0 : info[i];
+				var tagins = $('<div></div>')
+						.addClass('tag-ins off')
+						.css({
+							width: this.options.handlerWidth,
+							height: hgtFrom,
+							borderBottom: '1px solid grey',
+							backgroundColor: '#27408B',
+							cursor: 'pointer'
+						})
+						// .hover(function () {
+						// 	if (!$(this).parent().hasClass('unfold')) {
+						// 		$(this).animate({ height: hgtTo }, 'slow');
+						// 	}
+						// }, function () {
+						// 	if (!$(this).parent().hasClass('unfold')) {
+						// 		$(this).animate({ height: hgtFrom }, 'slow');
+						// 	}
+						// })
+						// .click(function () {
+						// 	if ($(this).hasClass('off')) {
+						// 		$(this).animate({ height: hgtTo }, 'normal');
+						// 		$(this).removeClass('off');
+						// 		$(this).addClass('on');
+						// 	} else if ($(this).hasClass('on')) {
+						// 		$(this).animate({ height: hgtFrom }, 'normal');
+						// 		$(this).removeClass('on');
+						// 		$(this).addClass('off');
+						// 	}
+						// })
+						.appendTo(handler);
+			}
+			return $('.tag-ins');
+		},
+		addTag: function (handler, tNum, tfoo) {
+			this._addTag(handler);    // Call from the outside
+		},
+		_addButton: function (panel) {
 			this._panelBtn = $('<div></div>')
 				.css({
 					height: this.options.handlerWidth,
@@ -164,9 +216,14 @@
 				.addClass('panel-btn')
 				.appendTo(panel);
 		},
+		addButton: function (panel) {
+			this._addButton(panel);
+		},    // Call from the outside
 		_addHook: function (anchor, event, folddiv) {
 			var mask = document.createElement('div'),
-				that = this;
+				that = this,
+				queue = [];
+			
 			$(mask).css({
 				position : "fixed",
 				backgroundColor: 'black',
@@ -178,26 +235,36 @@
 				right: 0,
 				zIndex: that.options.maskZIndex
 			}).hide().appendTo(document.body);
-			anchor.on(event, function () {
-				$(this).toggleClass('unfold');
-				if ($(this).hasClass('unfold')) {
-					if (that.options.mask) {
-						$(mask).css({
- 							height : $(document).height() - (that.options.top + that.options.bottom)
-						}).fadeIn('normal');
+			anchor.each(function () {
+				$(this).on(event, function () {
+					$(this).css({
+						backgroundColor: '#FFD700'
+					});
+					if (queue.length > that.options.tags - 1)
+						queue.shift();
+					queue.push(this);
+					if (queue.length === 1) {
+						if (that.options.mask) {
+							$(mask).css({
+ 								height : $(document).height() - (that.options.top + that.options.bottom)
+							}).fadeIn('normal');
+						}				
+						folddiv.slideShow(that.options.position, that.options.panelWidth, 'normal');
+					} else if ((queue[queue.length - 1] == queue[queue.length - 2])) {
+						if (that.options.mask) {
+							$(mask).fadeOut("normal");
+						}
+						folddiv.slideHide(that.options.position, that.options.panelWidth, 'fast');
+						queue = [];
+					} else if ((queue[queue.length - 1] != queue[queue.length - 2])) {
+						//TODO: refresh panel
 					}
-					folddiv.slideShow(that.options.position, that.options.panelWidth, 'normal');
-				} else {
-					if (that.options.mask) {
-						$(mask).fadeOut("normal");
-					}
-					folddiv.slideHide(that.options.position, that.options.panelWidth, 'fast');
-				}
+				});
 			});
-		},
+		},    // DONE
 		addHook: function (anchor, event, folddiv) {
 			this._addHook(anchor, event, folddiv);
-		},
+		},    // Call from the outside
 		destroy: function () {
 			this._cartHandler.remove();
 			this._innerPanel.remove();
