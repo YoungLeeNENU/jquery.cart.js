@@ -40,9 +40,25 @@
 			maskZIndex: 70,
 			maskOpacity: 0.5,
 			tags: 1,
-			setTagInfo: function () {
-				return [ 0 ];    // 0 by default
-			}
+			setCommonTag: function () {
+				var hgtFrom = 90,
+					hgtTo = 120;
+				
+				$(this).css({
+					width: 35,
+					height: hgtFrom,
+					borderBottom: '1px solid grey',
+					backgroundColor: '#27408B',
+					cursor: 'pointer'
+				});
+				
+				return $(this);
+			},
+			setSingleTag: [ function () {
+				$(this).css({
+					backgroundColor: '#FF8C00'
+				});
+			} ]
 		},
 		_create: function () {
 			// Set css positions
@@ -78,7 +94,7 @@
 			this._reSize(this._innerPanel);
 			
 			// Add tag
-			var hooks = this._addTag(this._cartHandler, this.options.tags, this.options.setTagInfo);
+			var hooks = this._addTag(this._cartHandler);
 
 			// Add submit button
 			// this._addButton(this._innerPanel);
@@ -159,42 +175,16 @@
 				};
 			}
 		},    // DONE
-		_addTag: function (handler, tNum, tfoo) {    // Shall controll css from the outside
-			var info = tfoo();
-			for(var i = 0; i < tNum; i++) {
+		_addTag: function (handler) {    // Shall controll css from the outside
+			for(var i = 0; i < this.options.tags; i++) {
 				var hgtFrom = 90,
-					hgtTo = 120,
-					tinfo = info[i] === undefined ? 0 : info[i];
+					hgtTo = 120;
 				var tagins = $('<div></div>')
 						.addClass('tag-ins off')
-						.css({
-							width: this.options.handlerWidth,
-							height: hgtFrom,
-							borderBottom: '1px solid grey',
-							backgroundColor: '#27408B',
-							cursor: 'pointer'
-						})
-						// .hover(function () {
-						// 	if (!$(this).parent().hasClass('unfold')) {
-						// 		$(this).animate({ height: hgtTo }, 'slow');
-						// 	}
-						// }, function () {
-						// 	if (!$(this).parent().hasClass('unfold')) {
-						// 		$(this).animate({ height: hgtFrom }, 'slow');
-						// 	}
-						// })
-						// .click(function () {
-						// 	if ($(this).hasClass('off')) {
-						// 		$(this).animate({ height: hgtTo }, 'normal');
-						// 		$(this).removeClass('off');
-						// 		$(this).addClass('on');
-						// 	} else if ($(this).hasClass('on')) {
-						// 		$(this).animate({ height: hgtFrom }, 'normal');
-						// 		$(this).removeClass('on');
-						// 		$(this).addClass('off');
-						// 	}
-						// })
 						.appendTo(handler);
+				this.options.setCommonTag.call(tagins);
+				if (this.options.setSingleTag[i] != null)
+					this.options.setSingleTag[i].call(tagins);
 			}
 			return $('.tag-ins');
 		},
@@ -237,7 +227,6 @@
 			}).hide().appendTo(document.body);
 			anchor.each(function () {
 				$(this).on(event, function () {
-					$(this).css({ backgroundColor: '#FFD700' });
 					var queueSize = that.options.tags == 1 ? 2 : that.options.tags;    // queueSize >= 2 
 					if (queue.length > queueSize - 1)
 						queue.shift();
