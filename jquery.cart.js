@@ -58,7 +58,20 @@
 				$(this).css({
 					backgroundColor: '#FF8C00'
 				});
-			} ]
+			} ],
+			setItemsArea: function () {
+				$(this).css({
+					width: 240,
+					height: document.body.clientHeight - 50,
+					// height: 300,
+					overflowY: 'auto',
+					// border: '1px solid black',
+					zIndex: 73,
+					marginLeft: 5,
+					marginTop: 50,
+					backgroundColor: '#5E5E5E'
+				});
+			}
 		},
 		_create: function () {
 			// Set css positions
@@ -93,12 +106,10 @@
 				.appendTo(this.element);
 			this._reSize(this._innerPanel);
 			
-			// Add tag
-			var hooks = this._addTag(this._cartHandler);
-
-			// Add submit button
-			// this._addButton(this._innerPanel);
-
+			var hooks = this._addTag(this._cartHandler);    // Add tag
+			var iarea = this._addItemsArea(this._innerPanel);    // Add items panel 
+			var btn = this._addButton(this._innerPanel);    // Add submit button
+			
 			// Add trigger
 			this._addHook(hooks, 'click', this.element);
 		},
@@ -179,32 +190,54 @@
 			for(var i = 0; i < this.options.tags; i++) {
 				var hgtFrom = 90,
 					hgtTo = 120;
-				var tagins = $('<div></div>')
+				var tagIns = $('<div></div>')
 						.addClass('tag-ins off')
 						.appendTo(handler);
-				this.options.setCommonTag.call(tagins);
+				this.options.setCommonTag.call(tagIns);
 				if (this.options.setSingleTag[i] != null)
-					this.options.setSingleTag[i].call(tagins);
+					this.options.setSingleTag[i].call(tagIns);
 			}
 			return $('.tag-ins');
 		},
 		addTag: function (handler, tNum, tfoo) {
 			this._addTag(handler);    // Call from the outside
 		},
+		_addItemsArea: function (panel) {
+			this._itemsArea = $('<div></div>')
+				.addClass('items-area')
+				.appendTo(panel);
+			this.options.setItemsArea.call(this._itemsArea);
+			return $('.items-area');
+		},
 		_addButton: function (panel) {
+			var btnAreaWidth = 50;
 			this._panelBtn = $('<div></div>')
 				.css({
-					height: this.options.handlerWidth,
+					height: btnAreaWidth,
 					width: this.options.panelWidth,
-					marginLeft: - this.options.handlerWidth,
-					marginTop: this.options.height - this.options.handlerWidth,
-					backgroundColor: '#DCDCDC',
+					marginLeft: 0,
+					marginTop: - btnAreaWidth,
+					backgroundColor: '#8B0000',
 					bottom: this.options.bottom,
 					left: 0,
+					// cursor: 'pointer',
+					zIndex: this.options.maskZIndex + 10,
 					cursor: 'pointer'
 				})
 				.addClass('panel-btn')
 				.appendTo(panel);
+			// this._submitBtn = $('<div></div>')
+			// 	.css({
+			// 		width: this.options.panelWidth - 30,
+			// 		height: this.options.handlerWidth + 10,
+			// 		marginLeft: 15,
+			// 		backgroundColor: '#8B0000',
+			// 		cursor: 'pointer'
+			// 	})
+			// 	.addClass('submit-btn')
+			// 	.appendTo(this._panelBtn);
+			// this._submitBtn.appendTo(this._panelBtn.appendTo(this._panelBtn));
+			return $('.panel-btn');
 		},
 		addButton: function (panel) {
 			this._addButton(panel);
@@ -220,7 +253,7 @@
 				opacity : this.options.maskOpacity,
 				top : this.options.top,
 				bottom: this.options.bottom,
-				width : $(document).width(),
+				nwidth : $(document).width(),
 				left: 0,
 				right: 0,
 				zIndex: that.options.maskZIndex
@@ -285,12 +318,5 @@
 		destroy: function () {
 			//TODO: 
 		}
-	});
-})(jQuery);
-
-// filter info
-(function($) {
-	$.widget('uicart.infopanel', {
-		
 	});
 })(jQuery);
