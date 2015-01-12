@@ -207,6 +207,10 @@
 				.addClass('items-area')
 				.appendTo(panel);
 			this.options.setItemsArea.call(this._itemsArea);
+			// this._itemIns = $(document.createElement("div")).addClass('item-ins').appendTo(this._itemsArea);
+			// this._itemIns.item({
+			// 	timeDft: "2014-12-13~2015-01-12"
+			// });
 			return $('.items-area');
 		},
 		_addButton: function (panel) {
@@ -221,7 +225,7 @@
 					bottom: this.options.bottom,
 					left: 0,
 					// cursor: 'pointer',
-					zIndex: this.options.maskZIndex + 10,
+					zIndex: this.options.maskZIndex + 100,
 					cursor: 'pointer'
 				})
 				.addClass('panel-btn')

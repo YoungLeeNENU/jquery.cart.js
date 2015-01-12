@@ -2,7 +2,7 @@ $(document).ready(function () {
 	// Add slide cart
 	$('#J_cart').slidecart({
 		top: 87,
-		panelWidth: 280,
+		panelWidth: 307,
 		height: document.body.clientHeight - 87,
 		mask: true,
 		tags: 2,
@@ -52,7 +52,7 @@ $(document).ready(function () {
 		} ],
 		setItemsArea: function () {
 			$(this).css({
-				width: 270,
+				width: 297,
 				height: document.body.clientHeight - 50 - 87,
 				// height: 300,
 				overflowY: 'auto',
@@ -62,6 +62,12 @@ $(document).ready(function () {
 				marginTop: 50,
 				backgroundColor: '#5E5E5E'
 			});
+			for(var i = 0; i < 5; i++) {
+				var items = $(document.createElement("div")).addClass('item-sample').appendTo($(this));
+				items.item({
+					timeDft: "2014-12-13~2015-01-12"
+				});
+			}
 		}
 	}).addClass('slidecart-test');
 
