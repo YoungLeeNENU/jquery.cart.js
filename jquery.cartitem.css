@@ -1,6 +1,28 @@
-.item-close { float: right; width: 14px; height: 14px; margin-top: -91px; margin-right: 3px; /* border: 1px solid #696969; */ border-radius: 20px; cursor: pointer; }
+.item-ins { height: 100px; width: 274px; margin-left: 10px; margin-right: 10px; margin-top: 5px; padding: 0; border: 1px solid #FE9D1F; background-color: #F5F6FA; z-index: 100; }
+.checkbox-con { float: left; height: 100%; width: 24px; background-color: #FE9D1F; z-index: 101; }
+.check-item { margin-left: 6px; margin-top: 40px; z-index: 102; }
+.itemname-area { height: 61px; width: 214px; border-bottom: 1px solid #DDD; padding: 0; margin-left: 30px; margin-top: 6px; z-index: 101; }
+.itemgame-con { height: 20px; width: 214px; border-bottom: 1px solid #DDD; }
+.item-game { font-size: 14px; color: #5E5E5E; }
+.itemname-con { margin-top: 8px; margin-bottom: 10px; height: 24px; width: 100%; }
+.item-name { font-size: 24; font-weight: bold; color: #5E5E5E; }
+.time-area { height: 30px; width: 212px; margin: 0 0 0 30px; border: 1px solid #F5F6FA /*black*/; z-index: 103; }
+.time-tag { position: absolute; height: 22px; width: 184px; border: 1px solid #696969; color: white; border-radius: 4px; margin-left: 0px; margin-top: 5px; cursor: pointer; opacity: 0.6; z-index: 101; }
+.datepick { border: 0; height: 22px; width: 154px; border-radius: 4px; background-color: #F5F6FA; margin-left: 8px; }
+.tag-con { position: relative; height: 18px; width: 18px; border: 1px solid #696969; color: white; margin-left: 190px; border-radius: 4px; cursor: pointer; margin-top: 7px; opacity: 0.6; z-index: 101; }
+.op-area { float: right; height: 100%; width: 24px; z-index: 102; }
+.item-close { float: right; width: 14px; height: 14px; margin-top: 4px; margin-right: 3px; /* border: 1px solid #696969; */ border-radius: 20px; cursor: pointer; z-index: 103; }
 div.icon div.icon-timeadd { width: 12px; height: 2px; background: #696969; position: absolute; left: 3px; top: 8px; /* z-index: 10; */ }
 div.icon div.icon-timeadd:after { content: ''; position: absolute; width: 2px; height: 12px; background: #696969; left: 5px; top: -5px; /* z-index: 10; */ }
+.time-close { float: right; width: 14px; height: 14px; margin-top: 3px; margin-right: 26px; /* border: 1px solid #696969; */ border-radius: 20px; cursor: pointer; z-index: 103; }
+div.icon div.icon-timeclose { width: 14px; height: 1px; background: #696969; margin: 6px 0 0 0; -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg); cursor: pointer; /* z-index: 10; */ }
+div.icon div.icon-timeclose:after { content: ''; width: 14px; height: 1px; background: #696969; position: absolute; top: 0px; left: 0px; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); cursor: pointer; /* z-index: 10; */ }
 div.icon div.icon-itemclose { width: 14px; height: 1px; background: #696969; margin: 6px 0 0 0; -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg); cursor: pointer; /* z-index: 10; */ }
 div.icon div.icon-itemclose:after { content: ''; width: 14px; height: 1px; background: #696969; position: absolute; top: 0px; left: 0px; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); cursor: pointer; /* z-index: 10; */ }
+.item-fold { float: right; width: 14px; height: 14px; margin: 62px 3px 0 0; /* border: 1px solid #696969; */ cursor: pointer; z-index: 103; }
+.additional-panel { width: 244px; margin: -130px 10px 0 40px; height: 125px; border: 1px solid purple; }
+div.icon div.icon-itemfold { width: 10px; height: 10px; border: 1px solid #696969; border-width: 1px 1px 0 0; -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg); margin: 9px 0 0 1px; }
+
+
+// .additional-icon { float: right; width: 14px; height: 14px; background-color: purple; border-radius: 0px; cursor: pointer; margin: -17px 10px 0 10px; }
 

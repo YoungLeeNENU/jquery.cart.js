@@ -293,30 +293,3 @@
 		}
 	});
 })(jQuery);
-
-// item in the cart
-(function($) {
-	$.widget('uicart.cartitems', {
-		options: {
-			liNum: 1
-		},
-		_create: function () {
-			for(var i = 0; i < this.options.liNum; i++) {
-				this.item = $('<div></div>')
-					.addClass('cart-item')
-					.css({
-						height: 100,
-						// width: "100%",
-						marginLeft: 10,
-						marginRight: 10,
-						padding: 0,
-						borderBottom: '1px solid grey'
-					})
-					.appendTo(this.element);
-			}
-		},
-		destroy: function () {
-			//TODO: 
-		}
-	});
-})(jQuery);

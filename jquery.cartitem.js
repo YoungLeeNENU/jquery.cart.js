@@ -7,160 +7,124 @@
 (function($) {
 	$.widget('uicart.item', {
 		options: {
-			timeDft: "2014-12-11 ~ 2015-01-10"
+            zIndexBasic: 100,
+			timeDft: "0000-00-00 ~ 0000-00-00",
+            ckboxSelected: function () {
+                //TODO: 
+            },
+            gameNameTxt: function () {
+                $(this).text("More");
+            },
+            ItemNameTxt: function () {
+                $(this).text("Game Custom Item");
+            },
+            setItemTime: function () {
+                $(this).click(function () {
+                    //TODO: 
+                });
+            },
+            setItemAdd: function () {
+                $(this).click(function () {
+                    var $timeArea = $(this).parent(),
+                        $widget = $timeArea.parent();
+                    $widget.animate({ height: '229px' }, 'fast');
+                    $timeArea.animate({ height: '159px' }, 'fast');
+                    $widget.find('.item-fold').animate({ marginTop: '192px' }, 'fast', function () {
+                        $(this).show();
+                    });
+                });
+            },
+            setItemClose: function () {
+                $(this).click(function () {
+                    var $widget = $(this).parent().parent();
+                    $widget.fadeOut('slow', function () {
+                        $(this).remove();
+                    });
+                });
+            },
+            setItemFold: function () {
+                $(this).click(function () {
+                    var $fold = $(this),
+                        $widget = $(this).parent().parent(),
+                        $time = $widget.find('.time-area');
+                    $fold.hide(function () {
+                        $(this).animate({ marginTop: '62px' }, 'fast');
+                    });
+                    $widget.animate({ height: '100px' }, 'fast');
+                    $time.animate({ height: '30px' }, 'fast');
+                });
+            }
 		},
 		_create: function () {
-			var that = this;
-			this.item = $(document.createElement("div"))
-				.addClass('item-ins')
-				.css({
-					height: 100,
-					width: 274,
-					marginLeft: 10,
-					marginRight: 10,
-					marginTop: 5,
-					padding: 0,
-					border: '1px solid #FE9D1F',
-					backgroundColor: '#F5F6FA'
-				})
-				.appendTo(this.element);
-			this.checkboxCon = $(document.createElement("div"))
-				.css({ float: 'left', height: '100%', width: 24, backgroundColor: '#FE9D1F' })
-				.addClass('checkbox-con')
-				.appendTo(this.item);
-			this.checkbox = $(document.createElement("input"))
-				.attr({ type: 'checkbox' })
-				.css({ marginLeft: 6, marginTop: 40 })
-				.addClass('check-item')
-				.appendTo(this.checkboxCon);
-			this.itemNameArea = $(document.createElement("div"))
-				.css({
-					height: 61,
-					width: 214,
-					// float: 'right',
-					// backgroundColor: '#D2B48C',
-					borderBottom: '1px solid #DDD',
-					// border: '1px solid #F4A460',
-					padding: 0,
-					marginLeft: 30,
-					// marginRight: 6,
-					marginTop: 6
-				})
-				.addClass('itemname-area')
-				.appendTo(this.item);
-			this.itemGameCon = $(document.createElement("div"))
-				.css({
-					height: 20,
-					width: 214,
-					borderBottom: '1px solid #DDD'
-					// backgroundColor: '#A52A2A'
-				})
-				.addClass('itemgame-con')
-				.appendTo(this.itemNameArea);
-			this.itemGame = $(document.createElement("span"))
-				.css({
-					fontSize: 14,
-					color: '#5E5E5E'
-				})
-				.text('Game Name')
-				.addClass('item-game')
-				.appendTo(this.itemGameCon);
-			this.itemNameCon = $(document.createElement("div"))
-				.css({
-					// border: '1px solid #F4A460',
-					// backgroundColor: '#cd5c5c',
-					marginTop: 8,
-					marginBottom: 10,
-					height: 24,
-					width: '100%'
-				})
-				.addClass('itemname-con')
-				.appendTo(this.itemNameArea);
-			this.itemName = $(document.createElement("span"))
-				.css({
-					fontSize: 24,
-					fontWeight: 'bold',
-					color: '#5E5E5E'
-					// marginLeft: 10
-				})
-				.text('Game Custom Item')
-				.addClass('item-name')
-				.appendTo(this.itemNameCon);
-			this.itemTimeHead = $(document.createElement('div'))
-				.css({
-					position: 'absolute',
-					height: 22,
-					width: 184,
-					// backgroundColor: '#696969',
-					border: '1px solid #696969',
-					color: 'white',
-					borderRadius: 4,
-					marginLeft: 30,
-					marginTop: 5,
-					cursor: 'pointer',
-					opacity: 0.6
-				})
-				.addClass('time-tag cur')
-				.appendTo(this.item);
-			this.itemTimeDft = $(document.createElement('input'))
-				.attr({ type: 'text' })
-				.css({ border: 0, height: 22, width: 154, borderRadius: 4 })
-				.val(this.options.timeDft)
-				.addClass('datepick')
-				.appendTo(this.itemTimeHead)
-				.click(function () {
-					console.log($(this));
-					$(this).datepick({
-						rangeSelect: true,
-						monthsToShow: 2,
-						monthsToStep: 2,
-						monthsOffset: 2,
-						shortCut : false,
-						maxDate: new Date(),
-						onShow: function () {
-							var refreshTime = that.options.timeDft;
-							that.itemTimeDft(refreshTime);
-						},
-						onClose: function () {
-							
-						}
-					});
-				});
-			this.itemTimeAdd = $(document.createElement("div"))
-				.css({
-					position: 'relative',
-					height: 18,
-					width: 18,
-					// backgroundColor: '#696969',
-					border: '1px solid #696969',
-					color: 'white',
-					marginLeft: 220,
-					borderRadius: 4,
-					cursor: 'pointer',
-					marginTop: 7,
-					opacity: 0.6
-				})
-				.addClass('tag-con')
-				.appendTo(this.item)
-				.click(function () {
-					$(this).parent().animate({ height: '220px' });
-			});;
-			this.itemClose = $(document.createElement("div")).addClass('item-close').appendTo(this.item)
-				.click(function () {
-					$(this).parent().fadeOut('slow', function () {
-						$(this).remove();
-					});
-				});
-			this.iconAdd = $(document.createElement("div")).addClass('icon').appendTo(this.itemTimeAdd);
+            var ckbox = this._setCheckBox(),
+                itemOpArea = this._setItemOpArea(),
+                gameName = this._setGameName(),
+                itemName = this._setItemName(),
+                itemTime = this._setItemTime(),
+                itemAdd = this._setItemAdd(),
+                itemClose = this._setItemClose(),
+                itemFold = this._setItemFold();
+            
+            this.options.ckboxSelected.call(ckbox);
+            this.options.gameNameTxt.call(gameName);
+            this.options.ItemNameTxt.call(itemName);
+            this.options.setItemTime.call(itemTime);
+            this.options.setItemAdd.call(itemAdd);
+            this.options.setItemClose.call(itemClose);
+            this.options.setItemFold.call(itemFold);
+		},
+        _setCheckBox: function (con) {
+            this.item = $(document.createElement("div")).addClass('item-ins').appendTo(this.element);
+			this.checkboxCon = $(document.createElement("div")).addClass('checkbox-con').appendTo(this.item);
+			this.checkbox = $(document.createElement("input")).attr({ type: 'checkbox' }).addClass('check-item').appendTo(this.checkboxCon);
+            return this.checkbox;
+        },
+        _setItemOpArea: function () {
+            this.opCon = $(document.createElement("div")).addClass('op-area').appendTo(this.item);
+            return this.opCon;
+        },
+        _setGameName: function () {
+			this.itemNameArea = $(document.createElement("div")).addClass('itemname-area').appendTo(this.item);
+			this.itemGameCon = $(document.createElement("div")).addClass('itemgame-con').appendTo(this.itemNameArea);
+			this.itemGame = $(document.createElement("span")).addClass('item-game').appendTo(this.itemGameCon);
+            return this.itemGame;
+        },
+        _setItemName: function () {
+			this.itemNameCon = $(document.createElement("div")).addClass('itemname-con').appendTo(this.itemNameArea);
+			this.itemName = $(document.createElement("span")).addClass('item-name').appendTo(this.itemNameCon);
+            return this.itemName;
+        },
+        _setItemTime: function () {
+            this.itemTimeArea = $(document.createElement("div")).addClass('time-area').appendTo(this.item);
+			this.itemTimeHead = $(document.createElement('div')).addClass('time-tag cur').appendTo(this.itemTimeArea);
+			this.itemTimeDft = $(document.createElement('input')).attr({ type: 'text' }).val(this.options.timeDft).addClass('datepick').appendTo(this.itemTimeHead);
+            return this.itemTimeDft;
+        },
+        _setItemAdd: function () {
+			this.itemTAdd = $(document.createElement("div")).addClass('tag-con').appendTo(this.itemTimeArea);
+			this.iconAdd = $(document.createElement("div")).addClass('icon').appendTo(this.itemTAdd);
 			this.iconTimeAdd = $(document.createElement("div")).addClass('icon-timeadd').appendTo(this.iconAdd);
+            
+			this.itemClose = $(document.createElement("div")).addClass('time-close').appendTo(this.itemTAdd);
+			this.iconClose = $(document.createElement("div")).addClass('icon').appendTo(this.itemClose);
+			this.iconItemClose = $(document.createElement("div")).addClass('icon-timeclose').appendTo(this.iconClose);
+            return this.itemTAdd;
+        },
+        _setItemClose: function () {
+			this.itemClose = $(document.createElement("div")).addClass('item-close').appendTo(this.opCon);
 			this.iconClose = $(document.createElement("div")).addClass('icon').appendTo(this.itemClose);
 			this.iconItemClose = $(document.createElement("div")).addClass('icon-itemclose').appendTo(this.iconClose);
-		},
-		additem: function () {
-			this._create();
-		},
+            return this.itemClose;
+        },
+        _setItemFold: function () {
+            this.itemFold = $(document.createElement("div")).addClass("item-fold").appendTo(this.opCon).hide();
+			this.iconFold = $(document.createElement("div")).addClass('icon').appendTo(this.itemFold);
+			this.iconItemFold = $(document.createElement("div")).addClass('icon-itemfold').appendTo(this.iconFold);
+            return this.itemFold;
+        },
 		destroy: function () {
-			//TODO: 
+            this.item.remove();
+            $.Widget.prototype.destroy.apply(this, arguments);
 		}
 	});
 })(jQuery);
