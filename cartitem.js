@@ -13,7 +13,12 @@ $(document).ready(function () {
 			},
 			ItemNameTxt: function () {
 				$(this).text(iname);
-			}
+			},
+            setItemTime: function () {
+                $(this).click(function () {
+					console.log('Clicked!');
+                });
+            }
 		});
 	});
 });
